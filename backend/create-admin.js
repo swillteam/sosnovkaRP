@@ -1,0 +1,9 @@
+'use strict';
+const readline=require('node:readline');
+const crypto=require('node:crypto');
+const path=require('node:path');
+const {DatabaseSync}=require('node:sqlite');
+const db=new DatabaseSync(path.join(__dirname,'..','sosnovka.sqlite'));
+db.exec(`CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL UNIQUE COLLATE NOCASE,email TEXT NOT NULL UNIQUE COLLATE NOCASE,password_hash TEXT NOT NULL,display_name TEXT NOT NULL,avatar_url TEXT,bio TEXT NOT NULL DEFAULT '',role TEXT NOT NULL DEFAULT 'user',reputation INTEGER NOT NULL DEFAULT 0,status TEXT NOT NULL DEFAULT 'active',created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);`);
+const rl=readline.createInterface({input:process.stdin,output:process.stdout});const ask=q=>new Promise(r=>rl.question(q,r));
+(async()=>{const username=(await ask('Admin username: ')).trim();const email=(await ask('Admin email: ')).trim().toLowerCase();const password=await ask('Admin password (10+ chars): ');const displayName=(await ask('Display name: ')).trim()||username;rl.close();if(!/^[A-Za-z0-9_]{3,24}$/.test(username)||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(email)||password.length<10)throw Error('Invalid admin data.');const salt=crypto.randomBytes(16).toString('hex');const ph=`scrypt$${salt}$${crypto.scryptSync(password,salt,64,{N:16384,r:8,p:1,maxmem:32*1024*1024}).toString('hex')}`;const old=db.prepare('SELECT id FROM users WHERE username=? OR email=?').get(username,email);if(old){db.prepare('UPDATE users SET email=?,password_hash=?,display_name=?,role="owner",status="active" WHERE id=?').run(email,ph,displayName,old.id);console.log('Existing account promoted to owner.')}else{db.prepare('INSERT INTO users(username,email,password_hash,display_name,role) VALUES(?,?,?,?,"owner")').run(username,email,ph,displayName);console.log('Owner account created.')}db.close()})().catch(e=>{console.error(e.message);process.exitCode=1})
