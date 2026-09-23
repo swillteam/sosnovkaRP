@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07111d">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="SOSNOVKA RP — современный Roblox RP-проект с реалистичной атмосферой, фракциями, транспортом, бизнесом и большим игровым миром.">
+  <title>SOSNOVKA RP — Roblox RolePlay</title>
+  <link rel="stylesheet" href="/forum.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2307111d'/%3E%3Cpath d='M17 47V17h18c8 0 12 4 12 10 0 4-2 7-6 8 5 1 8 4 8 9 0 6-5 11-14 11H17zm10-18h8c3 0 5-1 5-3s-2-3-5-3h-8v6zm0 12h10c3 0 5-2 5-4s-2-4-5-4H27v8z' fill='%2349a9ff'/%3E%3C/svg%3E">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap');
+
+    :root{
+      --bg:#050a11;--bg2:#08111d;--panel:rgba(13,24,37,.66);--panel2:#0c1826;
+      --text:#f3f7fb;--muted:#8e9eaf;--line:rgba(154,188,218,.13);
+      --blue:#45a8ff;--blue2:#176cff;--cyan:#6ed6ff;--green:#66e6b1;
+      --shadow:0 24px 70px rgba(0,0,0,.34);--max:1220px;--r:20px
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,sans-serif;background:
+      radial-gradient(circle at 80% 0%,rgba(27,108,190,.12),transparent 30rem),
+      radial-gradient(circle at 10% 30%,rgba(30,83,137,.09),transparent 28rem),var(--bg);
+      color:var(--text);line-height:1.55;overflow-x:hidden}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.26;
+      background-image:linear-gradient(rgba(120,180,230,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(120,180,230,.018) 1px,transparent 1px);
+      background-size:72px 72px;mask-image:linear-gradient(#000,transparent 75%);z-index:-2}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+    button{font:inherit}
+    .container{width:min(calc(100% - 40px),var(--max));margin:auto}
+    .glass{background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+    .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6dbdff;font-weight:800;margin-bottom:12px}
+    h1,h2,h3{font-family:Manrope,Inter,sans-serif}
+    h2{font-size:clamp(34px,4.7vw,58px);line-height:1.02;letter-spacing:-.055em}
+    .muted{color:var(--muted)}
+
+    /* Header */
+    .header{position:fixed;z-index:100;top:14px;left:50%;transform:translateX(-50%);width:min(calc(100% - 28px),1180px);min-width:0;
+      height:64px;border-radius:17px;padding:8px 9px 8px 16px;display:flex;align-items:center;justify-content:space-between;
+      transition:.3s;background:rgba(5,12,20,.63);border:1px solid rgba(147,191,225,.14);backdrop-filter:blur(22px)}
+    .header.scrolled{background:rgba(5,11,18,.9);box-shadow:0 15px 45px rgba(0,0,0,.25)}
+    .brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:.04em;min-width:145px;flex:0 0 auto}.brand>span:last-child{white-space:nowrap}
+    .logo{width:39px;height:39px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#163e65,#0a1c30);border:1px solid rgba(83,170,245,.27);color:#66bdff;font-weight:900;box-shadow:inset 0 0 25px rgba(69,168,255,.1)}
+    .brand small{display:block;font-size:9px;color:#72879a;letter-spacing:.16em;margin-top:-2px}
+    .nav{display:flex;gap:2px;align-items:center;min-width:0;flex:1;justify-content:flex-end}.nav a{white-space:nowrap}
+    .nav a{font-size:12px;color:#9cacbc;padding:10px 9px;border-radius:9px;transition:.2s}
+    .nav a:hover{color:#fff;background:rgba(255,255,255,.05)}
+    .play{padding:11px 15px;border-radius:11px;background:#eef7ff;color:#07111d;font-size:12px;font-weight:800;transition:.2s}
+    .play:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(85,170,255,.2)}
+    .menu{display:none;border:0;background:transparent;color:white;font-size:23px;cursor:pointer}
+
+    /* Hero */
+    .hero{min-height:850px;position:relative;display:flex;align-items:center;overflow:hidden}
+    .hero-bg{position:absolute;inset:0;background:
+      linear-gradient(90deg,rgba(3,8,14,.94) 0%,rgba(3,8,14,.73) 42%,rgba(3,8,14,.38) 100%),
+      linear-gradient(0deg,rgba(5,10,17,.96) 0%,transparent 30%,rgba(5,10,17,.35) 100%),
+      url("https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=2200&q=82") center/cover;
+      transform:scale(1.04);will-change:transform}
+    .hero-grid{position:absolute;inset:0;background:radial-gradient(circle at 66% 48%,rgba(49,143,231,.14),transparent 28rem)}
+    .hero-content{position:relative;z-index:2;padding-top:75px;max-width:810px}
+    .badge{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(99,181,246,.2);background:rgba(44,110,167,.08);border-radius:999px;padding:7px 11px;color:#9ac9ec;font-size:11px;font-weight:700;margin-bottom:23px}
+    .live-dot{width:7px;height:7px;border-radius:50%;background:#66e6b1;box-shadow:0 0 14px #66e6b1}
+    .hero h1{font-size:clamp(55px,9.2vw,112px);line-height:.88;letter-spacing:-.075em;margin-bottom:25px}
+    .hero h1 span{color:#58b5ff}
+    .hero-sub{font-size:clamp(17px,1.7vw,20px);max-width:700px;color:#afbbc8;line-height:1.7;margin-bottom:31px}
+    .hero-buttons{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{min-height:48px;padding:0 17px;border-radius:12px;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:12px;font-weight:800;transition:.22s;cursor:pointer}
+    .btn-primary{background:linear-gradient(135deg,#4db2ff,#277ff0);border-color:transparent;color:white;box-shadow:0 14px 38px rgba(31,119,221,.22)}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 48px rgba(31,119,221,.32)}
+    .btn-ghost{background:rgba(255,255,255,.045);color:#dbe8f3}
+    .btn-ghost:hover{background:rgba(255,255,255,.08);transform:translateY(-3px)}
+    .hero-meta{display:flex;gap:18px;color:#6e8295;font-size:10px;letter-spacing:.15em;margin-top:27px}
+    .scroll{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);font-size:10px;color:#72889a;letter-spacing:.2em}
+
+    /* Sections */
+    section{padding:110px 0;scroll-margin-top:100px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:42px}
+    .section-head>div:last-child{max-width:470px;color:var(--muted);font-size:14px;line-height:1.75}
+
+    /* Stats */
+    .stats{margin-top:-1px;position:relative;z-index:3}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:18px;background:rgba(8,17,27,.78);overflow:hidden;box-shadow:var(--shadow)}
+    .stat{padding:25px 27px;border-right:1px solid var(--line)}
+    .stat:last-child{border-right:0}
+    .stat-num{font:800 30px Manrope;color:#e9f5ff;letter-spacing:-.05em}
+    .stat-label{font-size:11px;color:#778b9e;margin-top:3px}
+
+    /* About */
+    .about-grid{display:grid;grid-template-columns:1fr .9fr;gap:18px;align-items:stretch}
+    .about-copy{padding:40px;border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(145deg,rgba(15,30,46,.7),rgba(8,16,26,.72))}
+    .about-copy p{color:#9eacba;margin-top:21px;max-width:640px;line-height:1.85;font-size:14px}
+    .city-card{min-height:430px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;position:relative;background:url("https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1200&q=80") center/cover}
+    .city-card:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(4,10,16,.88),transparent 55%)}
+    .city-caption{position:absolute;z-index:2;left:25px;bottom:23px}
+    .city-caption b{font:700 23px Manrope}.city-caption div{font-size:11px;color:#9eb1c2;margin-top:2px}
+
+    /* Features */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+    .feature{min-height:205px;padding:25px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(16,29,43,.65),rgba(8,16,25,.7));transition:.25s;position:relative;overflow:hidden}
+    .feature:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;right:-110px;bottom:-110px;background:rgba(61,157,239,.11);filter:blur(15px)}
+    .feature:hover{transform:translateY(-5px);border-color:rgba(78,171,246,.28);box-shadow:var(--shadow)}
+    .feature-icon{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;color:#65bdff;background:rgba(55,151,224,.1);border:1px solid rgba(77,164,229,.13);margin-bottom:20px;font-size:17px}
+    .feature h3{font-size:17px;margin-bottom:8px}.feature p{color:#8193a4;font-size:13px;line-height:1.65}
+
+    /* Factions */
+    .factions{background:linear-gradient(180deg,transparent,rgba(10,27,43,.28),transparent)}
+    .faction-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+    .faction{min-height:340px;border:1px solid var(--line);border-radius:19px;overflow:hidden;background:#0a141f;position:relative}
+    .faction-img{height:190px;background-size:cover;background-position:center;filter:saturate(.78);transition:.4s}
+    .faction:hover .faction-img{transform:scale(1.04);filter:saturate(1)}
+    .faction-overlay{position:absolute;top:0;left:0;right:0;height:190px;background:linear-gradient(0deg,#0a141f,transparent 75%)}
+    .faction-body{padding:21px;position:relative}.faction-body h3{font-size:19px}.faction-body p{font-size:12px;color:#8192a1;margin:7px 0 16px}
+    .more{font-size:11px;color:#64b9ff;font-weight:800;letter-spacing:.08em}
+
+    /* News */
+    .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+    .news{padding:24px;border:1px solid var(--line);border-radius:18px;background:rgba(11,21,32,.64);transition:.2s}
+    .news:hover{border-color:rgba(86,169,231,.25);transform:translateY(-3px)}
+    .news-top{display:flex;justify-content:space-between;color:#63798b;font-size:10px;text-transform:uppercase;letter-spacing:.12em}
+    .news-tag{color:#5eb6ff}.news h3{font-size:19px;line-height:1.25;margin:18px 0 9px}.news p{font-size:12px;color:#8191a0;line-height:1.7;margin-bottom:19px}
+
+    /* World */
+    .world{position:relative;min-height:550px;border:1px solid var(--line);border-radius:25px;overflow:hidden;background:
+      linear-gradient(90deg,rgba(3,10,16,.9),rgba(3,10,16,.25)),url("https://images.unsplash.com/photo-1444723121867-7a241cacace9?auto=format&fit=crop&w=1900&q=82") center/cover}
+    .world:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 53% 50%,rgba(55,157,235,.12),transparent 22rem)}
+    .map-line{position:absolute;left:10%;right:10%;top:52%;height:1px;background:rgba(99,184,245,.22);transform:rotate(-11deg)}
+    .pin{position:absolute;z-index:2;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(7,19,31,.86);border:1px solid rgba(95,187,246,.42);box-shadow:0 0 0 7px rgba(64,164,235,.08),0 0 24px rgba(64,164,235,.22);font-size:13px}
+    .pin:after{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#59baff;box-shadow:0 0 12px #59baff}
+    .pin span{position:absolute;white-space:nowrap;left:42px;color:#cbd8e3;font-size:10px;background:rgba(5,12,20,.8);padding:5px 7px;border:1px solid var(--line);border-radius:6px;opacity:0;transition:.2s;pointer-events:none}
+    .pin:hover span{opacity:1}
+    .p1{left:22%;top:30%}.p2{left:43%;top:48%}.p3{left:63%;top:28%}.p4{left:74%;top:61%}.p5{left:51%;top:76%}.p6{left:32%;top:68%}
+    .world-label{position:absolute;z-index:3;left:30px;bottom:27px}.world-label h3{font-size:29px}.world-label p{font-size:12px;color:#92a5b5}
+
+    /* Steps */
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+    .step{padding:28px;border:1px solid var(--line);border-radius:18px;background:rgba(12,23,35,.63)}
+    .step-num{color:#5ab8ff;font:800 12px Manrope;letter-spacing:.12em}.step h3{font-size:20px;margin:17px 0 7px}.step p{font-size:12px;color:#8191a0}
+    .center{display:flex;justify-content:center;margin-top:25px}
+
+    /* Discord / Forum / Support */
+    .wide{border:1px solid var(--line);border-radius:25px;padding:52px;background:
+      radial-gradient(circle at 82% 50%,rgba(40,137,219,.12),transparent 25rem),rgba(10,21,33,.74);display:flex;justify-content:space-between;align-items:center;gap:35px}
+    .wide h2{max-width:690px}.wide p{color:#8497a8;font-size:14px;max-width:680px;margin-top:14px}
+    .wide-actions{display:flex;gap:9px;flex-shrink:0}
+    .forum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:28px}
+    .forum-item{padding:15px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.025);font-size:11px;color:#9eb0bf;transition:.2s}
+    .forum-item:hover{border-color:rgba(81,171,239,.3);color:white;background:rgba(81,171,239,.05)}
+
+    /* FAQ */
+    .faq{max-width:880px;margin:auto}
+    details{border-bottom:1px solid var(--line);padding:18px 0}
+    summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;font-weight:700;font-size:14px}
+    summary::-webkit-details-marker{display:none}
+    summary:after{content:"+";color:#62b9ff;font-size:19px;font-weight:400}
+    details[open] summary:after{content:"−"}
+    details p{color:#8394a4;font-size:13px;line-height:1.75;padding:12px 25px 0 0}
+
+    /* Footer */
+    footer{padding:65px 0 32px;border-top:1px solid var(--line);margin-top:30px}
+    .footer{display:flex;justify-content:space-between;gap:30px;align-items:start}
+    .footer-brand{font-weight:800}.footer-brand small{display:block;color:#617587;font-size:10px;letter-spacing:.14em;margin-top:5px}
+    .footer-links{display:flex;gap:17px;flex-wrap:wrap;justify-content:flex-end;color:#718698;font-size:11px}
+    .footer-links a:hover{color:white}
+    .legal{margin-top:35px;padding-top:17px;border-top:1px solid var(--line);color:#526779;font-size:10px}
+
+    /* Reveal / particles */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .65s ease,transform .65s ease}
+    .reveal.visible{opacity:1;transform:none}
+    .particle{position:fixed;width:2px;height:2px;border-radius:50%;background:#72c9ff;opacity:.25;pointer-events:none;z-index:-1}
+
+    @media(max-width:1120px){
+      .nav a:nth-child(-n+5){display:none}
+      .menu{display:block}
+      .nav{gap:6px}
+      .nav a{padding:9px 7px}
+    }
+    @media(max-width:900px){
+      .header{height:60px;padding-left:11px}
+      .brand{min-width:125px;gap:8px;font-size:12px}
+      .logo{width:35px;height:35px;border-radius:10px;font-size:12px}
+      .brand small{font-size:8px}
+      .nav a:nth-child(6),.nav a:nth-child(7){display:none}
+      .nav .play{display:inline-flex}
+      .menu{display:block}
+      .cards,.news-grid{grid-template-columns:repeat(2,1fr)}
+      .faction-grid{grid-template-columns:repeat(2,1fr)}
+      .about-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:680px){
+      .container{width:min(calc(100% - 26px),var(--max))}
+      .header{top:8px;width:calc(100% - 16px)}.header .play{display:none}
+      .mobile-nav{position:absolute;top:70px;left:0;right:0;padding:8px;border-radius:15px;background:rgba(5,12,20,.97);border:1px solid var(--line);display:none;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+      .mobile-nav.open{display:grid}.mobile-nav a{padding:11px;border-radius:9px;color:#9bacbd;font-size:12px}.mobile-nav a:hover{background:rgba(255,255,255,.05);color:white}
+      .hero{min-height:760px}.hero h1{font-size:58px}.hero-sub{font-size:15px}.hero-meta{gap:10px;font-size:8px}
+      section{padding:78px 0}.section-head{display:block}.section-head>div:last-child{margin-top:17px}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+      .cards,.faction-grid,.news-grid,.steps{grid-template-columns:1fr}
+      .faction{min-height:320px}.wide{display:block;padding:34px 25px}.wide-actions{margin-top:23px;flex-wrap:wrap}
+      .forum-grid{grid-template-columns:repeat(2,1fr)}
+      .world{min-height:430px}.world-label{left:20px}.world-label h3{font-size:24px}
+      .footer{display:block}.footer-links{justify-content:flex-start;margin-top:22px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+<header class="header" id="header">
+  <a href="#home" class="brand">
+    <span class="logo">SRP</span>
+    <span>SOSNOVKA RP<small>ROLEPLAY PROJECT</small></span>
+  </a>
+  <nav class="nav">
+    <a href="#home">Главная</a><a href="#about">О проекте</a><a href="#factions">Фракции</a><a href="#news">Новости</a>
+    <a href="#rules">Правила</a><a href="#forum">Форум</a><a href="#support">Поддержка</a>
+    <a id="headerDiscord" class="play" target="_blank" rel="noopener">▶ ИГРАТЬ</a>
+    <div id="appAuth" class="app-auth"></div><button class="menu" id="menu" aria-label="Меню">☰</button>
+  </nav>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#home">Главная</a><a href="#about">О проекте</a><a href="#factions">Фракции</a><a href="#news">Новости</a>
+    <a href="#rules">Правила</a><a href="#forum">Форум</a><a href="#support">Поддержка</a><a id="mobileDiscord" target="_blank">Discord</a><div id="mobileAuth"></div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="hero-bg" id="heroBg"></div><div class="hero-grid"></div>
+    <div class="container">
+      <div class="hero-content reveal">
+        <div class="badge"><span class="live-dot"></span> ПРОЕКТ РАЗВИВАЕТСЯ</div>
+        <h1>SOSNOVKA<br><span>RP</span></h1>
+        <p class="hero-sub"><b>Твой город. Твоя история. Твой выбор.</b><br>
+          Современный Roblox RP-проект с реалистичной атмосферой, фракциями, транспортом, бизнесом и развитой системой взаимодействия игроков.</p>
+        <div class="hero-buttons">
+          <a class="btn btn-primary" id="heroPlay" target="_blank" rel="noopener">▶ НАЧАТЬ ИГРАТЬ</a>
+          <a class="btn btn-ghost" id="heroDiscord" target="_blank" rel="noopener">DISCORD</a>
+        </div>
+        <div class="hero-meta"><span>ROBLOX</span><span>•</span><span>RP</span><span>•</span><span>MULTIPLAYER</span></div>
+      </div>
+    </div>
+    <div class="scroll">SCROLL ↓</div>
+  </section>
+
+  <section class="stats" style="padding:0">
+    <div class="container">
+      <div class="stats-grid reveal" aria-label="Статистика проекта">
+        <div class="stat"><div class="stat-num" data-count="1">01</div><div class="stat-label">Игровой мир</div></div>
+        <div class="stat"><div class="stat-num" data-count="2">02</div><div class="stat-label">Государственные фракции</div></div>
+        <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Возможности игрока</div></div>
+        <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Развитие проекта</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="section-head reveal">
+        <div><div class="eyebrow">01 — Проект</div><h2>О SOSNOVKA RP</h2></div>
+        <div>Большой виртуальный город, где действия игроков формируют собственные истории и события.</div>
+      </div>
+      <div class="about-grid">
+        <article class="about-copy reveal">
+          <p>SOSNOVKA RP — это игровой RP-проект в Roblox, созданный для игроков, которым интересна реалистичная ролевая атмосфера, развитие персонажа, взаимодействие с другими игроками и жизнь в виртуальном городе.</p>
+          <p>На проекте игрок может выбрать собственный путь: службу в государственных структурах, работу, бизнес, криминальную деятельность, развитие собственного персонажа или обычную гражданскую жизнь.</p>
+          <p>Проект находится в разработке и постепенно получает новые системы, локации и игровые механики.</p>
+        </article>
+        <div class="city-card reveal"><div class="city-caption"><b>SOSNOVKA</b><div>Город, в котором начинается твоя история</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="container">
+      <div class="section-head reveal"><div><div class="eyebrow">02 — Gameplay</div><h2>ВОЗМОЖНОСТИ</h2></div><div>Создавай персонажа, выбирай направление и развивай свою историю в городе.</div></div>
+      <div class="cards">
+        <article class="feature reveal"><div class="feature-icon">▣</div><h3>Государственные структуры</h3><p>Полиция, армия, УФСБ и другие направления государственной службы.</p></article>
+        <article class="feature reveal"><div class="feature-icon">◆</div><h3>Бизнес</h3><p>Развивай собственное дело и участвуй в экономической жизни города.</p></article>
+        <article class="feature reveal"><div class="feature-icon">⌁</div><h3>Транспорт</h3><p>Автомобили, мотоциклы и транспорт для повседневной жизни и работы.</p></article>
+        <article class="feature reveal"><div class="feature-icon">◎</div><h3>Развитие персонажа</h3><p>Работа, имущество, достижения и социальный статус персонажа.</p></article>
+        <article class="feature reveal"><div class="feature-icon">□</div><h3>Открытый город</h3><p>Исследуй город, посещай районы и взаимодействуй с другими игроками.</p></article>
+        <article class="feature reveal"><div class="feature-icon">✦</div><h3>RolePlay</h3><p>Создавай собственные ситуации, события и истории вместе с другими игроками.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="factions" id="factions">
+    <div class="container">
+      <div class="section-head reveal"><div><div class="eyebrow">03 — Organizations</div><h2>ФРАКЦИИ</h2></div><div>Государственные направления — одна из основ ролевой жизни SOSNOVKA RP.</div></div>
+      <div class="faction-grid">
+        <article class="faction reveal"><div class="faction-img" style="background-image:url('https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=900&q=80')"></div><div class="faction-overlay"></div><div class="faction-body"><h3>УФСБ</h3><p>Государственная структура. Специальные направления и обеспечение безопасности.</p><a class="more" href="#forum">ПОДРОБНЕЕ →</a></div></article>
+        <article class="faction reveal"><div class="faction-img" style="background-image:url('https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=900&q=80')"></div><div class="faction-overlay"></div><div class="faction-body"><h3>АРМИЯ</h3><p>Вооружённые силы и военная служба в рамках RP-системы проекта.</p><a class="more" href="#forum">ПОДРОБНЕЕ →</a></div></article>
+        <article class="faction reveal"><div class="faction-img" style="background-image:url('https://images.unsplash.com/photo-1529516548873-9ce57c8f155e?auto=format&fit=crop&w=900&q=80')"></div><div class="faction-overlay"></div><div class="faction-body"><h3>ПРАВООХРАНИТЕЛЬНЫЕ ОРГАНЫ</h3><p>Порядок, безопасность города и взаимодействие с гражданами.</p><a class="more" href="#forum">ПОДРОБНЕЕ →</a></div></article>
+        <article class="faction reveal"><div class="faction-img" style="background-image:url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=900&q=80')"></div><div class="faction-overlay"></div><div class="faction-body"><h3>ГОСОРГАНИЗАЦИИ</h3><p>Различные направления государственной службы и городского управления.</p><a class="more" href="#forum">ПОДРОБНЕЕ →</a></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="news">
+    <div class="container">
+      <div class="section-head reveal"><div><div class="eyebrow">04 — Updates</div><h2>ПОСЛЕДНИЕ НОВОСТИ</h2></div><div>Демонстрационные записи ниже легко заменить реальными публикациями проекта.</div></div>
+      <div class="news-grid"><div class="loading-state">Загрузка новостей…</div></div>
+    </div>
+  </section>
+
+  <section id="world">
+    <div class="container">
+      <div class="section-head reveal"><div><div class="eyebrow">05 — Location</div><h2>ГОРОД SOSNOVKA</h2></div><div>Визуальная карта-раздел. Точки можно заменить реальными координатами и объектами карты.</div></div>
+      <div class="world reveal">
+        <div class="map-line"></div>
+        <div class="pin p1">●<span>Государственные учреждения</span></div><div class="pin p2">●<span>Полиция</span></div>
+        <div class="pin p3">●<span>УФСБ</span></div><div class="pin p4">●<span>Армия</span></div>
+        <div class="pin p5">●<span>Автосалоны</span></div><div class="pin p6">●<span>Больница</span></div>
+        <div class="world-label"><h3>SOSNOVKA</h3><p>Город • Районы • Инфраструктура</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="start">
+    <div class="container">
+      <div class="section-head reveal"><div><div class="eyebrow">06 — Start</div><h2>КАК НАЧАТЬ ИГРАТЬ</h2></div><div>Три простых шага — и ты уже можешь создавать свою историю.</div></div>
+      <div class="steps">
+        <article class="step reveal"><div class="step-num">01 — STEP</div><h3>Открой Roblox</h3><p>Запусти Roblox на компьютере или мобильном устройстве.</p></article>
+        <article class="step reveal"><div class="step-num">02 — STEP</div><h3>Найди SOSNOVKA RP</h3><p>Открой страницу проекта через кнопку ниже или поиск Roblox.</p></article>
+        <article class="step reveal"><div class="step-num">03 — STEP</div><h3>Играй и создавай историю</h3><p>Выбери свой путь, знакомься с игроками и развивай персонажа.</p></article>
+      </div>
+      <div class="center reveal"><a class="btn btn-primary" id="playBottom" target="_blank" rel="noopener">▶ ИГРАТЬ В ROBLOX</a></div>
+    </div>
+  </section>
+
+  <section id="discord">
+    <div class="container">
+      <div class="wide reveal">
+        <div><div class="eyebrow">07 — Community</div><h2>ПРИСОЕДИНЯЙСЯ К СООБЩЕСТВУ</h2><p>Общайся с игроками, следи за новостями проекта, подавай заявки и участвуй в жизни SOSNOVKA RP.</p></div>
+        <div class="wide-actions"><a class="btn btn-primary" id="discordButton" target="_blank" rel="noopener">DISCORD →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="forum">
+    <div class="container">
+      <div class="section-head reveal"><div><div class="eyebrow">08 — Community Hub</div><h2>ФОРУМ SOSNOVKA RP</h2></div><div>Полноценный форум с аккаунтами, темами, сообщениями, поиском, уведомлениями и модерацией.</div></div>
+      <div id="forumApp" class="reveal"><div class="loading-state">Загрузка форума…</div></div>
+    </div>
+  </section>
+
+  <section id="rules">
+    <div class="container">
+      <div class="section-head reveal"><div><div class="eyebrow">09 — Information</div><h2>ПРАВИЛА</h2></div><div>Базовые демонстрационные вопросы. Полный свод правил заменяется одной ссылкой в конфигурации.</div></div>
+      <div class="faq">
+        <details class="reveal"><summary>Где ознакомиться с полными правилами?</summary><p>Откройте официальный раздел правил проекта через кнопку «Правила» или соответствующий канал форума.</p></details>
+        <details class="reveal"><summary>Как попасть во фракцию?</summary><p>Условия вступления зависят от конкретной организации. Актуальные требования публикуются в официальных материалах проекта.</p></details>
+        <details class="reveal"><summary>Где задавать вопросы администрации?</summary><p>Используйте Discord Support или официальный раздел помощи.</p></details>
+        <details class="reveal"><summary>Можно ли предложить идею для проекта?</summary><p>Да. Предложения можно собирать в отдельном разделе сообщества и передавать администрации проекта.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="support">
+    <div class="container">
+      <div class="wide reveal">
+        <div><div class="eyebrow">10 — Support</div><h2>НУЖНА ПОМОЩЬ?</h2><p>Обратись в поддержку проекта или воспользуйся разделом часто задаваемых вопросов.</p></div>
+        <div class="wide-actions"><a class="btn btn-primary" id="supportButton" target="_blank" rel="noopener">DISCORD SUPPORT</a><a class="btn btn-ghost" href="#rules">FAQ</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer">
+      <div class="footer-brand"><b>SRP</b><small>SOSNOVKA RP</small></div>
+      <div class="footer-links"><a href="#home">Главная</a><a href="#rules">Правила</a><a id="footerForum" target="_blank" rel="noopener">Форум</a><a id="footerDiscord" target="_blank" rel="noopener">Discord</a><a id="footerSupport" target="_blank" rel="noopener">Поддержка</a></div>
+    </div>
+    <div class="legal">© <span id="year"></span> SOSNOVKA RP. Все права защищены. <span style="display:block;margin-top:7px">SOSNOVKA RP не является официальным продуктом Roblox Corporation.</span></div>
+  </div>
+</footer>
+
+<div id="notificationPanel" class="notification-panel"></div>
+<div id="modalRoot"></div>
+<div id="toastWrap" class="toast-wrap"></div>
+
+<script>
+/* ==========================================================
+   SOSNOVKA RP — CONFIG
+   Меняй ссылки ТОЛЬКО здесь.
+   ========================================================== */
+const CONFIG = {
+  ROBLOX_URL: "https://www.roblox.com/",
+  DISCORD_URL: "https://discord.gg/FHPKAJnsJD",
+  FORUM_URL: "/forum",
+  SUPPORT_URL: "https://discord.gg/FHPKAJnsJD",
+  RULES_URL: "#rules"
+};
+
+/* Link wiring */
+const links = {
+  headerDiscord: CONFIG.ROBLOX_URL,
+  heroPlay: CONFIG.ROBLOX_URL,
+  playBottom: CONFIG.ROBLOX_URL,
+  heroDiscord: CONFIG.DISCORD_URL,
+  mobileDiscord: CONFIG.DISCORD_URL,
+  discordButton: CONFIG.DISCORD_URL,
+  forumButton: CONFIG.FORUM_URL,
+  supportButton: CONFIG.SUPPORT_URL,
+  footerForum: CONFIG.FORUM_URL,
+  footerDiscord: CONFIG.DISCORD_URL,
+  footerSupport: CONFIG.SUPPORT_URL
+};
+Object.entries(links).forEach(([id,url]) => {
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.href=url;
+  if(/^https?:\/\//i.test(url)){ el.target="_blank"; el.rel="noopener noreferrer"; }
+});
+// Server config is authoritative in production; this also keeps Roblox/Discord/forum URLs out of page markup.
+fetch('/api/config',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).then(cfg=>{
+  if(!cfg) return;
+  Object.assign(CONFIG,cfg);
+  Object.entries({headerDiscord:CONFIG.ROBLOX_URL,heroPlay:CONFIG.ROBLOX_URL,playBottom:CONFIG.ROBLOX_URL,heroDiscord:CONFIG.DISCORD_URL,mobileDiscord:CONFIG.DISCORD_URL,discordButton:CONFIG.DISCORD_URL,forumButton:CONFIG.FORUM_URL,supportButton:CONFIG.SUPPORT_URL,footerForum:CONFIG.FORUM_URL,footerDiscord:CONFIG.DISCORD_URL,footerSupport:CONFIG.SUPPORT_URL}).forEach(([id,url])=>{
+    const el=document.getElementById(id); if(!el) return; el.href=url;
+    if(/^https?:\/\//i.test(url)){el.target='_blank';el.rel='noopener noreferrer';}
+  });
+}).catch(()=>{});
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* Header + mobile menu */
+const header=document.getElementById("header");
+const menu=document.getElementById("menu");
+const mobile=document.getElementById("mobileNav");
+const setMenuState=(open)=>{
+  mobile.classList.toggle("open",open);
+  menu.setAttribute("aria-expanded",String(open));
+  menu.textContent=open?"×":"☰";
+};
+menu.setAttribute("aria-expanded","false");
+menu.addEventListener("click",()=>setMenuState(!mobile.classList.contains("open")));
+mobile.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>setMenuState(false)));
+addEventListener("resize",()=>{if(innerWidth>680)setMenuState(false)});
+addEventListener("scroll",()=>header.classList.toggle("scrolled",scrollY>30),{passive:true});
+
+/* Scroll reveal */
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add("visible");observer.unobserve(e.target)}
+  });
+},{threshold:.10,rootMargin:"0px 0px -30px 0px"});
+document.querySelectorAll(".reveal").forEach((el,i)=>{
+  el.style.transitionDelay=(Math.min(i%6,5)*45)+"ms";
+  observer.observe(el);
+});
+
+/* Animated statistics */
+const animateNumber=(el)=>{
+  const target=Number(el.dataset.count);
+  if(!Number.isFinite(target)) return;
+  const start=performance.now(), duration=850;
+  const tick=(now)=>{
+    const t=Math.min((now-start)/duration,1);
+    const eased=1-Math.pow(1-t,3);
+    el.textContent=String(Math.max(1,Math.round(target*eased))).padStart(2,"0");
+    if(t<1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+};
+const statObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){animateNumber(e.target);statObserver.unobserve(e.target)}});
+},{threshold:.6});
+document.querySelectorAll(".stat-num[data-count]").forEach(el=>statObserver.observe(el));
+
+/* Hero parallax — disabled for touch/reduced-motion */
+const heroBg=document.getElementById("heroBg");
+const reduceMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;
+if(!reduceMotion && matchMedia("(pointer:fine)").matches){
+  addEventListener("scroll",()=>{
+    if(innerWidth>700) heroBg.style.transform=`scale(1.04) translate3d(0,${scrollY*.035}px,0)`;
+  },{passive:true});
+}
+
+/* Lightweight particles */
+if(!reduceMotion){
+  const frag=document.createDocumentFragment();
+  for(let i=0;i<22;i++){
+    const p=document.createElement("i");p.className="particle";
+    p.style.left=Math.random()*100+"vw";p.style.top=Math.random()*100+"vh";
+    p.style.opacity=(.08+Math.random()*.2).toFixed(2);
+    p.style.transform=`scale(${.5+Math.random()*1.5})`;
+    frag.appendChild(p);
+  }
+  document.body.appendChild(frag);
+}
+
+/* Smooth internal anchors, including dynamically configured # links */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener("click",e=>{
+    const id=a.getAttribute("href");
+    const target=id && document.querySelector(id);
+    if(target){
+      e.preventDefault();
+      target.scrollIntoView({behavior:reduceMotion?"auto":"smooth",block:"start"});
+      history.replaceState(null,"",id);
+    }
+  });
+});
+
+/* External image fallback: keeps cards visually valid if a remote image is unavailable. */
+document.querySelectorAll(".faction-img,.city-card").forEach(el=>{
+  const bg=el.style.backgroundImage;
+  if(!bg) return;
+  const match=bg.match(/url\(["']?(.*?)["']?\)/);
+  if(!match) return;
+  const probe=new Image();
+  probe.onload=()=>el.dataset.loaded="true";
+  probe.onerror=()=>{el.style.backgroundImage="linear-gradient(135deg,#0b1c2d,#07111d)";};
+  probe.src=match[1];
+});
+</script>
+<script src="/forum.js" defer></script>
+</body>
+</html>
